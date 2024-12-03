@@ -17,7 +17,16 @@ createPost = async (req, res) => {
     res.send("err");
   }
 };
+const getmanyPOSTS = async (req, res) => {
+  try {
+    const posts = await postModel.find();
 
+    res.status(200).send(posts);
+  } catch (err) {
+    console.log(err);
+    res.send("err");
+  }
+};
 getPost = async (req, res) => {
   try {
     const URL = req.params["postId"];
@@ -31,4 +40,4 @@ getPost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getPost };
+module.exports = { createPost, getPost, getmanyPOSTS };
