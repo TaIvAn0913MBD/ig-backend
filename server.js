@@ -5,6 +5,8 @@ const UserRouter = require("./router/userRouter");
 const PostRouter = require("./router/postRouter");
 const CommentRouter = require("./router/commentRouter");
 const LikeRouter = require("./router/likeRouter");
+const cors = require("cors");
+app.use(cors());
 const dotenv = require("dotenv");
 dotenv.config();
 app.use(express.json());
