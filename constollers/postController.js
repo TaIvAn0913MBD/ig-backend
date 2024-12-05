@@ -1,4 +1,3 @@
-const path = require("path");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
 
@@ -20,8 +19,11 @@ createPost = async (req, res) => {
 const getmanyPOSTS = async (req, res) => {
   try {
     const posts = await postModel.find();
+    const popPosts = await postModel.find().populate({
+      path: "creatorID",
+    });
 
-    res.status(200).send(posts);
+    res.status(200).send(popPosts);
   } catch (err) {
     console.log(err);
     res.send("err");
