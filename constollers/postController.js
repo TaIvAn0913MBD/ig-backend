@@ -4,7 +4,9 @@ const userModel = require("../models/userSchema");
 createPost = async (req, res) => {
   try {
     const body = req.body;
+
     const { creatorID } = body;
+    console.log(body);
     const response = await postModel.create(body);
     const _ID = response._id;
     await userModel.findByIdAndUpdate(creatorID, {
@@ -18,7 +20,6 @@ createPost = async (req, res) => {
 };
 const getmanyPOSTS = async (req, res) => {
   try {
-    const posts = await postModel.find();
     const popPosts = await postModel.find().populate({
       path: "creatorID",
     });
