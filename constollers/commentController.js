@@ -1,11 +1,13 @@
+const { populate } = require("dotenv");
 const CommentModel = require("../models/commentSchema");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
+const path = require("path");
 
 const CreateComment = async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
+
     const { authorID, postID } = body;
     const comm = await CommentModel.create(body);
     const _ID = comm._id;
@@ -22,5 +24,20 @@ const CreateComment = async (req, res) => {
     res.send("err");
   }
 };
+const getComments = async (req, res) => {
+  try {
+    const URL = req.params["postId"];
+    const FoundedPost = await postModel.findById(URL);
 
-module.exports = { CreateComment };
+    const pop = await FoundedPost.populate({
+      path: "comments",
+      populate: { path: "authorID" },
+    });
+
+    console.log(pop);
+    res.send(pop);
+  } catch (error) {
+    res.send(error);
+  }
+};
+module.exports = { CreateComment, getComments };

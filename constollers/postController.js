@@ -1,5 +1,7 @@
+const path = require("path");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
+const { populate } = require("dotenv");
 
 createPost = async (req, res) => {
   try {
