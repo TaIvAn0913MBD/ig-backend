@@ -1,7 +1,6 @@
-const path = require("path");
+const jwt = require("jsonwebtoken");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
-const { populate } = require("dotenv");
 
 createPost = async (req, res) => {
   try {
@@ -22,11 +21,22 @@ createPost = async (req, res) => {
 };
 const getmanyPOSTS = async (req, res) => {
   try {
-    const popPosts = await postModel.find().populate({
-      path: "creatorID",
-    });
+    console.log(req.headers);
+    const authHeader = req.headers["authorization"];
+    if (authHeader !== undefined) {
+      const token = authHeader.split(" ")[1];
+      if (!token) res.json({ message: "no token in headers" });
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(decoded);
+      const popPosts = await postModel.find().populate({
+        path: "creatorID",
+      });
+      console.log(popPosts);
 
-    res.status(200).send(popPosts);
+      res.status(200).send(popPosts);
+    } else {
+      res.status(404).send("error");
+    }
   } catch (err) {
     console.log(err);
     res.send("err");

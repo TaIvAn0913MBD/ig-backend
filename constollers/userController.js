@@ -1,5 +1,7 @@
 const userModel = require("../models/userSchema");
 const bcrypt = require("bcrypt");
+const { console } = require("inspector");
+const jwt = require("jsonwebtoken");
 
 const signUp = async (req, res) => {
   try {
@@ -9,11 +11,20 @@ const signUp = async (req, res) => {
     const NewPass = await bcrypt.hash(oldPass, 10);
     body.password = NewPass;
     const response = await userModel.create(body);
-    console.log(response);
+
+    const token = jwt.sign(
+      {
+        userId: response._id,
+        username: response.username,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
     const _ID = response._id;
     console.log(_ID.toString());
     console.log(body);
-    res.send(body);
+    res.send(token);
   } catch (error) {
     console.log(error);
     res.send("error");
@@ -24,10 +35,19 @@ const login = async (req, res) => {
   try {
     const body = req.body;
     const Founded = await userModel.findOne(body);
-    const Nmae = Founded.username;
-    console.log(body);
-    console.log(Founded);
-    res.send(`Welcome ${Nmae}`);
+    const Name = Founded.username;
+    const authHeader = req.headers["authorization"];
+    if (authHeader !== undefined) {
+      const token = authHeader.split(" ")[1];
+      if (!token) res.json({ message: "no token in headers" });
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(decoded);
+      console.log(body);
+      console.log(Founded);
+      res.send(`Welcome ${Name}`);
+    } else {
+      res.send("error");
+    }
   } catch (error) {
     console.log(error);
   }
