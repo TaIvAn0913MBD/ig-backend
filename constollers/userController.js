@@ -24,7 +24,8 @@ const signUp = async (req, res) => {
     const _ID = response._id;
     console.log(_ID.toString());
     console.log(body);
-    res.json({ token });
+
+    res.send(JSON.stringify(token));
   } catch (error) {
     console.log(error);
     res.send("error");
