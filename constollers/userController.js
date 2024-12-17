@@ -1,12 +1,10 @@
 const userModel = require("../models/userSchema");
 const bcrypt = require("bcrypt");
-const { console } = require("inspector");
 const jwt = require("jsonwebtoken");
 
 const signUp = async (req, res) => {
   try {
-    const body = JSON.parse(req.body);
-    console.log(body);
+    const body = req.body;
     const oldPass = body.password;
     const NewPass = await bcrypt.hash(oldPass, 10);
     body.password = NewPass;
@@ -22,13 +20,10 @@ const signUp = async (req, res) => {
     );
 
     const _ID = response._id;
-    console.log(_ID.toString());
-    console.log(body);
 
-    res.send(JSON.stringify(token));
+    res.send({ token });
   } catch (error) {
-    console.log(error);
-    res.send(JSON.stringify(error));
+    res.send({ error });
   }
 };
 
