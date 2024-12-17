@@ -19,7 +19,7 @@ const signUp = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.send({ response });
+    res.send({ token });
   } catch (error) {
     console.log();
     res.send({ error });
