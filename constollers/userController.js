@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const signUp = async (req, res) => {
   try {
-    const body = req.body;
+    const body = JSON.parse(req.body);
     console.log(body);
     const oldPass = body.password;
     const NewPass = await bcrypt.hash(oldPass, 10);
@@ -28,7 +28,7 @@ const signUp = async (req, res) => {
     res.send(JSON.stringify(token));
   } catch (error) {
     console.log(error);
-    res.send("error");
+    res.send(JSON.stringify("error"));
   }
 };
 
