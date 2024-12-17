@@ -28,7 +28,7 @@ const signUp = async (req, res) => {
     res.send(JSON.stringify(token));
   } catch (error) {
     console.log(error);
-    res.send(JSON.stringify("error"));
+    res.send(JSON.stringify(error));
   }
 };
 
