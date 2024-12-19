@@ -39,9 +39,20 @@ const UnLike = async (req, res) => {
 
     res.send("success");
   } catch (error) {
-    console.log(error);
+    console.log("asdf", error);
     res.send("err");
   }
 };
+const getLikes = async (req, res) => {
+  try {
+    const postId = req.body._id;
+    console.log(postId);
+    const postFounded = await postModel.findById(postId);
+    res.status(200).send(postFounded);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+};
 
-module.exports = { CreateLike, UnLike };
+module.exports = { CreateLike, UnLike, getLikes };
