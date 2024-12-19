@@ -1,6 +1,8 @@
+const path = require("path");
 const likeModel = require("../models/likeSchema");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
+const { populate } = require("dotenv");
 
 const CreateLike = async (req, res) => {
   try {
@@ -47,7 +49,9 @@ const getLikes = async (req, res) => {
   try {
     const postId = req.body._id;
     console.log(postId);
-    const postFounded = await postModel.findById(postId);
+    const postFounded = await postModel
+      .findById(postId)
+      .populate({ path: "likes", populate: { path: "LikedId" } });
     res.status(200).send(postFounded);
   } catch (err) {
     console.log(err);
