@@ -27,24 +27,31 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  const { username, password } = req.body;
   try {
-    const body = req.body;
-    const Founded = await userModel.findOne(body);
-    const Name = Founded.username;
-    const authHeader = req.headers["authorization"];
-    if (authHeader !== undefined) {
-      const token = authHeader.split(" ")[1];
-      if (!token) res.json({ message: "no token in headers" });
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
-      console.log(body);
-      console.log(Founded);
-      res.send(`Welcome ${Name}`);
+    const user = await userModel.findOne({ username });
+    console.log(user.password);
+    const check = bcrypt.compare(password, user.password);
+
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        username: user.username,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+    if (check) {
+      console.log("succes");
+      res.json(token);
     } else {
-      res.send("error");
+      throw new Error("Failed to login");
     }
   } catch (error) {
     console.log(error);
+    res.send("login failed");
   }
 };
 
