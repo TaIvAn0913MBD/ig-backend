@@ -8,6 +8,6 @@ const {
 
 LikeRouter.post("/post/like", CreateLike);
 LikeRouter.post("/post/unlike", UnLike);
-LikeRouter.get("/like", getLikes);
+LikeRouter.get("/like/:likeId", getLikes);
 
 module.exports = LikeRouter;

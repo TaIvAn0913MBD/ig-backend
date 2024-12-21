@@ -45,17 +45,18 @@ const UnLike = async (req, res) => {
     res.send("err");
   }
 };
-const getLikes = async (req, res) => {
+
+getLikes = async (req, res) => {
   try {
-    const postId = req.body._id;
-    console.log(postId);
-    const postFounded = await postModel
-      .findById(postId)
+    const URL = req.params["likeId"];
+    const FoundedPost = await postModel
+      .findById(URL)
       .populate({ path: "likes", populate: { path: "LikedId" } });
-    res.status(200).send(postFounded);
-  } catch (err) {
-    console.log(err);
-    res.send(err);
+
+    res.send(FoundedPost);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
   }
 };
 
