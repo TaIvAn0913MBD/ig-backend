@@ -22,8 +22,8 @@ createPost = async (req, res) => {
 };
 const getmanyPOSTS = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader.split(" ")[1];
+    const authHeader = await req.headers["authorization"];
+    const token = await authHeader.split(" ")[1];
     if (!token) res.json({ message: "no token in headers" });
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const popPosts = await postModel.find().populate({
@@ -34,7 +34,7 @@ const getmanyPOSTS = async (req, res) => {
     res.status(200).send(popPosts);
   } catch (err) {
     console.log(err);
-    res.send("err");
+    res.send(err);
   }
 };
 getPost = async (req, res) => {
