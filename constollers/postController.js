@@ -31,7 +31,7 @@ const getmanyPOSTS = async (req, res) => {
     });
     console.log(decoded);
 
-    res.status(200).send(token);
+    res.status(200).send(popPosts);
   } catch (err) {
     console.log(err);
     res.send(err);
