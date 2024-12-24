@@ -2,20 +2,19 @@ const path = require("path");
 const likeModel = require("../models/likeSchema");
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
-const { populate } = require("dotenv");
 
 const CreateLike = async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
+
     const { LikedId, PostId } = body;
     const comm = await likeModel.create(body);
-    const _ID = comm._id;
+
     await userModel.findByIdAndUpdate(LikedId, {
-      $addToSet: { likes: _ID },
+      $addToSet: { likes: comm.PostId },
     });
     await postModel.findByIdAndUpdate(PostId, {
-      $addToSet: { likes: _ID },
+      $addToSet: { likes: comm.LikedId },
     });
 
     res.send("success");
