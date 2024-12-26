@@ -1,4 +1,6 @@
+const path = require("path");
 const postModel = require("../models/postSchema");
+const userModel = require("../models/userSchema");
 
 const CreateLike = async (req, res) => {
   try {
@@ -39,8 +41,7 @@ getLikes = async (req, res) => {
     const URL = req.params["likeId"];
     const FoundedPost = await postModel
       .findById(URL)
-      .populate({ path: "likes", populate: { path: "LikedId" } });
-
+      .populate({ path: "likes", select: "username profileIMG" });
     res.send(FoundedPost);
   } catch (error) {
     res.send(error);
