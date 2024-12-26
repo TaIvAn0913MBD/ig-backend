@@ -1,20 +1,13 @@
-const path = require("path");
-const likeModel = require("../models/likeSchema");
 const postModel = require("../models/postSchema");
-const userModel = require("../models/userSchema");
 
 const CreateLike = async (req, res) => {
   try {
     const body = req.body;
 
     const { LikedId, PostId } = body;
-    const comm = await likeModel.create(body);
 
-    await userModel.findByIdAndUpdate(LikedId, {
-      $addToSet: { likes: comm.PostId },
-    });
     await postModel.findByIdAndUpdate(PostId, {
-      $addToSet: { likes: comm.LikedId },
+      $addToSet: { likes: LikedId },
     });
 
     res.send("success");
@@ -29,11 +22,7 @@ const UnLike = async (req, res) => {
     const body = req.body;
     console.log(body);
     const { UnLikedItId, gotUnLikedId } = body;
-    const comm = await likeModel.findOneAndDelete({
-      LikedId: UnLikedItId,
-      PostId: gotUnLikedId,
-    });
-    console.log(comm);
+
     await postModel.findByIdAndUpdate(gotUnLikedId, {
       $pull: { likes: UnLikedItId },
     });
