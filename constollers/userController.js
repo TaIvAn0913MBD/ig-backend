@@ -92,17 +92,12 @@ const Unfollow = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const users = await userModel.find().populate({
-      path: "posts",
-
-      populate: { path: "comments" },
-      populate: {
-        path: "likes",
-        populate: { path: "LikedId", select: "username email" },
-      },
-    });
-
-    res.status(200).send(users);
+    const URL = req.params["userId"];
+    console.log(URL);
+    const user = await userModel.findById(URL);
+    const POP = await user.populate("following followers posts");
+    console.log(POP);
+    res.status(200).send(POP);
   } catch (error) {
     console.log(error);
     res.send("err");
