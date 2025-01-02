@@ -6,6 +6,7 @@ const signUp = async (req, res) => {
   try {
     const body = req.body;
     const oldPass = body.password;
+    console.log(body);
     const NewPass = await bcrypt.hash(oldPass, 10);
     body.password = NewPass;
     const response = await userModel.create(body);
@@ -103,5 +104,28 @@ const getUser = async (req, res) => {
     res.send("err");
   }
 };
+const EditUserProfileIMG = async (req, res) => {
+  try {
+    const file = req.body.file;
+    const userId = req.body.userId;
 
-module.exports = { signUp, login, getUser, Follow, Unfollow };
+    const POP = await userModel.findOneAndUpdate(
+      { _id: userId },
+      { profileIMG: file }
+    );
+
+    res.status(200).send(POP);
+  } catch (error) {
+    console.log(error);
+    res.send("err");
+  }
+};
+
+module.exports = {
+  signUp,
+  login,
+  getUser,
+  Follow,
+  Unfollow,
+  EditUserProfileIMG,
+};
