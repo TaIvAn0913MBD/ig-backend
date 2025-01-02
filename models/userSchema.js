@@ -1,4 +1,5 @@
 const { mongoose, Schema } = require("mongoose");
+const { type } = require("os");
 
 const userSchema = new Schema({
   email: { type: String, require: true },
@@ -9,6 +10,7 @@ const userSchema = new Schema({
   following: [{ type: mongoose.Types.ObjectId, ref: "users" }],
   comments: [{ type: mongoose.Types.ObjectId, ref: "comments" }],
   posts: [{ type: mongoose.Types.ObjectId, ref: "posts" }],
+  bio: { type: String, require: true },
 });
 
 const userModel = mongoose.model("users", userSchema);
