@@ -70,7 +70,7 @@ const Follow = async (req, res) => {
     res.send("success");
   } catch (error) {
     console.log(error);
-    res.send("err");
+    res.send(error);
   }
 };
 const Unfollow = async (req, res) => {
