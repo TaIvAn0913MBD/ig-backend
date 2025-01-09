@@ -109,15 +109,14 @@ const EditUserProfileIMG = async (req, res) => {
     const file = req.body.file;
     const userId = req.body.userId;
 
-    const POP = await userModel.findOneAndUpdate(
-      { _id: userId },
-      { profileIMG: file }
-    );
+    const POPOP = await userModel.findByIdAndUpdate(userId, {
+      profileIMG: file,
+    });
 
-    res.status(200).send(POP);
+    res.status(200).send(POPOP);
   } catch (error) {
     console.log(error);
-    res.send("err");
+    res.send(error);
   }
 };
 
