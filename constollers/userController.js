@@ -107,7 +107,7 @@ const getUser = async (req, res) => {
 const EditUserProfileIMG = async (req, res) => {
   try {
     const file = req.body.profileIMG;
-    const userId = req.body.userId;
+    const userId = req.body._id;
 
     const POPOP = await userModel.findByIdAndUpdate(userId, {
       profileIMG: file,
